@@ -1,0 +1,50 @@
+# importing packages
+from pytube import YouTube
+import logging
+import os
+
+# Logging File
+logging.basicConfig(filename = "test.log" , level = logging.INFO)
+
+  
+# url input from user
+yt = YouTube(str(input("Enter the URL of the video you want to download: \n>> ")))
+logging.info(f"video resolution {yt}")
+
+
+# Details of the entered video
+print('Title :',yt.title)
+print('Available formats :')
+for stream in yt.streams.filter(progressive=True,mime_type="video/mp4"):
+    logging.info(f"video resolution {stream.resolution} and FPS {stream.fps}")
+    print("resolution: " + stream.resolution)
+    print("fps: " + str(stream.fps))
+    print("----------------------")
+
+try:
+# Resolution of the video
+    Resolution = input('\nEnter the format to download the video to download video of that format: ')
+    logging.info(f"video resolution {Resolution}")
+
+    if Resolution == '144p' or Resolution == '240p':
+        video = yt.streams.get_lowest_resolution().download()
+        logging.info(f"video resolution {Resolution}")
+
+    elif Resolution == '360p':
+        video = yt.streams.filter(res="360p").first().download()
+        logging.info(f"video resolution {Resolution}")
+    elif Resolution == '720p':
+        video = yt.streams.filter(res="720p").first().download()
+        logging.info(f"video resolution {Resolution}")
+    else:
+        video = yt.streams.get_highest_resolution().download()
+        logging.info(f"video resolution {Resolution}")
+
+except Exception as e:
+    logging.error(e)
+
+
+# result of success
+print(yt.title + " has been successfully downloaded.")
+
+

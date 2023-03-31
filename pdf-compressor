@@ -1,0 +1,31 @@
+import os
+
+cwd = os.getcwd()  # Get the current working directory (cwd)
+files = os.listdir(cwd)  # Get all the files in that directory
+# print("Files in %r: %s" % (cwd, files))
+
+
+import PyPDF2
+# Open the PDF file in binary mode
+with open('C:\\Users\\rajuk\\OneDrive\\Desktop\\C tutorial\\a.pdf', 'rb') as input_file:
+
+    # Create a PDF reader object
+    reader = PyPDF2.PdfFileReader(input_file)
+    # Create a PDF writer object
+    writer = PyPDF2.PdfFileWriter()
+
+    # Loop through all the pages in the input file
+    for page_num in range(reader.getNumPages()):
+
+        # Get the page object for the current page
+        page_obj = reader.getPage(page_num)
+
+        # Compress the content of the page
+        page_obj.compressContentStreams()
+
+        # Add the compressed page to the output file
+        writer.addPage(page_obj)
+
+    # Save the compressed PDF to a new file
+    with open('output_file.pdf', 'wb') as output_file:
+        writer.write(output_file)
